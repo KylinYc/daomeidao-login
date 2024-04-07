@@ -59,14 +59,14 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: kToolbarHeight), // 距离顶部一个工具栏的高度
             buildTitle(), // Login
             const SizedBox(height: 60),
-            buildIdentity(context), //身份认证
-            const SizedBox(height: 60),
             buildStudentNumberTextField(), // 输入学工号
             const SizedBox(height: 30),
             buildPasswordTextField(context), // 输入密码
             buildForgetPasswordText(context), // 忘记密码
             const SizedBox(height: 60),
-            buildLoginButton(context), // 登录按钮
+            buildStudentLoginButton(context, 'student'), // 登录按钮
+            const SizedBox(height: 30),
+            buildTeacherLoginButton(context, 'teacher'),
             const SizedBox(height: 40),
             buildOtherLoginText(), // 其他账号登录
             buildRegisterText(context), // 注册
@@ -136,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 //登录按钮
-  Widget buildLoginButton(BuildContext context) {
+  Widget buildStudentLoginButton(BuildContext context, String userType) {
     return Align(
       child: SizedBox(
         height: 45,
@@ -145,15 +145,23 @@ class _MyHomePageState extends State<MyHomePage> {
           style: ButtonStyle(
               // 设置圆角
               shape: MaterialStateProperty.all(const StadiumBorder(
-                  side: BorderSide(style: BorderStyle.none)))),
+                  side: BorderSide(style: BorderStyle.none))),
+              // 设置按钮颜色为蓝色
+              backgroundColor: MaterialStateProperty.all(
+                  Color.fromARGB(255, 228, 151, 177))),
           child:
-              Text('登录', style: Theme.of(context).primaryTextTheme.headline5),
+              Text('学生登录', style: Theme.of(context).primaryTextTheme.headline5),
           onPressed: () {
             // 表单校验通过才会继续执行
             if ((_formKey.currentState as FormState).validate()) {
               (_formKey.currentState as FormState).save();
               //TODO 执行登录方法
               print('studentnunber: $_StudentNumber, password: $_password');
+              if (userType == 'student') {
+                // 学生登录逻辑
+              } else if (userType == 'teacher') {
+                // 教师登录逻辑
+              }
             }
           },
         ),
@@ -161,21 +169,36 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-//身份确认
-  Widget buildIdentity(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Checkbox(
-          value: _checkboxSelected,
-          activeColor: Colors.blue, //选中时的颜色
-          onChanged: (bool? newValue) {
-            setState(() {
-              _checkboxSelected = newValue!;
-            });
+  Widget buildTeacherLoginButton(BuildContext context, String userType) {
+    return Align(
+      child: SizedBox(
+        height: 45,
+        width: 270,
+        child: ElevatedButton(
+          style: ButtonStyle(
+              // 设置圆角
+              shape: MaterialStateProperty.all(const StadiumBorder(
+                  side: BorderSide(style: BorderStyle.none))),
+              // 设置按钮颜色为蓝色
+              backgroundColor: MaterialStateProperty.all(
+                  Color.fromARGB(255, 228, 151, 177))),
+          child:
+              Text('教师登录', style: Theme.of(context).primaryTextTheme.headline5),
+          onPressed: () {
+            // 表单校验通过才会继续执行
+            if ((_formKey.currentState as FormState).validate()) {
+              (_formKey.currentState as FormState).save();
+              //TODO 执行登录方法
+              print('studentnunber: $_StudentNumber, password: $_password');
+              if (userType == 'student') {
+                // 学生登录逻辑
+              } else if (userType == 'teacher') {
+                // 教师登录逻辑
+              }
+            }
           },
         ),
-        Text('学生登录'),
-      ],
+      ),
     );
   }
 
